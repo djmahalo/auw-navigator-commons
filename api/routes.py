@@ -25,8 +25,9 @@ def _require_engine():
     if engine is None:
         raise HTTPException(
             status_code=500,
-            detail="Database not configured yet"
+            detail="DB is not configured. Set DB_SERVER, DB_NAME, DB_USER, DB_PASSWORD in config/.env"
         )
+
 
 
 

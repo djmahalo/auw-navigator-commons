@@ -1,0 +1,10 @@
+﻿# Python
+__pycache__/
+*.pyc
+
+# Virtualenv
+.venv/
+
+# Local dev DB
+data/dev.db
+data/*.db

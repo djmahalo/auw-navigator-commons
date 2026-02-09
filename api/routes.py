@@ -1,3 +1,11 @@
+from fastapi import APIRouter, HTTPException
+from sqlalchemy import text
+
+from .models import IntakeCreate, IntakeResponse, HealthResponse
+from .db import engine
+from .rules_engine import evaluate_rules_and_enqueue
+
+
 from __future__ import annotations
 
 import os
@@ -12,6 +20,14 @@ from .db import engine
 from .rules_engine import evaluate_rules_and_enqueue
 
 router = APIRouter()
+
+def _require_engine():
+    if engine is None:
+        raise HTTPException(
+            status_code=500,
+            detail="Database not configured yet"
+        )
+
 
 
 @router.get("/health", response_model=HealthResponse)

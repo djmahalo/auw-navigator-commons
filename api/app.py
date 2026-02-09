@@ -1,3 +1,4 @@
+@'
 from __future__ import annotations
 
 import os
@@ -11,15 +12,15 @@ load_dotenv()
 
 app = FastAPI(
     title="AUW Navigator 211 POC",
-    version="0.1.0"
+    version="0.1.0",
 )
 
 app.include_router(router)
 
-# Optional: load JSON settings (not required)
 SETTINGS_PATH = os.path.join(os.path.dirname(__file__), "..", "config", "settings.json")
 try:
     with open(SETTINGS_PATH, "r", encoding="utf-8") as f:
         app.state.settings = json.load(f)
 except Exception:
     app.state.settings = {"rules_enabled": True, "default_queue": "General"}
+'@ | Set-Content -Encoding UTF8 .\api\app.py

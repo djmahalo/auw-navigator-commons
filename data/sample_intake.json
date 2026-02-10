@@ -1,0 +1,12 @@
+{
+  "caller_id": "client-001",
+  "channel": "phone",
+  "domain_module": "Housing",
+  "priority": "High",
+  "crisis": true,
+  "narrative": "Client reports risk of eviction within 7 days and needs immediate assistance.",
+  "attributes": {
+    "risk_days": 7,
+    "zip": "96819"
+  }
+}

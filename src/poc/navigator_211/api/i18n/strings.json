@@ -1,0 +1,37 @@
+{
+  "app.title": {
+    "en": "AUW 211 Navigator",
+    "haw": "AUW 211 Navigator",
+    "ptg": "AUW 211 Navigator"
+  },
+
+  "client.header": {
+    "en": "How can we help you today?",
+    "haw": "Pehea mākou e kōkua ai iā ʻoe i kēia lā?",
+    "ptg": "How we can help you today?"
+  },
+
+  "client.safe_question": {
+    "en": "Are you safe right now?",
+    "haw": "Ke palekana nei ʻoe i kēia manawa?",
+    "ptg": "You safe right now?"
+  },
+
+  "client.describe": {
+    "en": "Tell us what’s going on",
+    "haw": "E haʻi mai i kou kūlana",
+    "ptg": "Tell us wat going on"
+  },
+
+  "client.submit": {
+    "en": "Get Help",
+    "haw": "E loaʻa kōkua",
+    "ptg": "Get Help"
+  },
+
+  "client.consent": {
+    "en": "I agree to share this information so we can help",
+    "haw": "ʻAe wau e kaʻana i kēia ʻike no ke kōkua",
+    "ptg": "I like share dis so you can help me"
+  }
+}

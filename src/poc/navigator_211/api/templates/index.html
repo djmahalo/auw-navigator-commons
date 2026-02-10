@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUW 211 Navigator - Secure Intake Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Condensed:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* United Way Brand Colors - Primary Palette */
+            --uw-blue: #005191;              /* Pantone 287 C */
+            --uw-blue-light: #539ED0;        /* Pantone 659 C */
+            --uw-red: #FF443B;               /* Pantone 179 C */
+            --uw-orange: #FFB351;            /* Pantone 143 C */
+            
+            /* Digital Accent Colors (WCAG Compliant) */
+            --uw-blue-dark: #07477A;
+            --uw-orange-dark: #E8A44C;
+            --uw-red-dark: #D33D35;
+            
+            /* Grayscale */
+            --gray-70: #545454;
+            --gray-50: #969696;
+            --gray-30: #CCCCCC;
+            --gray-10: #E1E1E1;
+            --gray-02: #F7F7F7;
+            
+            /* Backgrounds */
+            --color-bg: #FFFFFF;
+            --color-surface: #F7F7F7;
+            
+            /* Extended Palette for Status */
+            --status-crisis: var(--uw-red);
+            --status-priority: var(--uw-orange);
+            --status-standard: #539ED0;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.15);
+            --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background: var(--color-bg);
+            color: var(--gray-70);
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--uw-blue);
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+        }
+
+        .logo-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .logo-text {
+            color: white;
+        }
+
+        .logo-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-subtitle {
+            font-size: 0.875rem;
+            font-weight: 400;
+            opacity: 0.95;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .nav-tab {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: none;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+            font-family: 'Roboto', Arial, sans-serif;
+        }
+
+        .nav-tab:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .nav-tab.active {
+            background: white;
+            color: var(--uw-blue);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 4px;
+            color: white;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--uw-blue);
+            font-weight: 700;
+            font-size: 0.875rem;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .screen {
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Headers */
+        h1, h2, h3 {
+            font-family: 'Roboto', Arial, sans-serif;
+            color: var(--gray-70);
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        /* Intake Form */
+        .intake-header {
+            background: var(--color-surface);
+            padding: 2.5rem 2rem;
+            border-radius: 4px;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+            border-left: 6px solid var(--uw-blue);
+        }
+
+        .intake-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--uw-blue);
+        }
+
+        .intake-header p {
+            color: var(--gray-50);
+            font-size: 1rem;
+        }
+
+        .form-section {
+            background: var(--color-surface);
+            padding: 2rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .form-section h2 {
+            font-family: 'Roboto Condensed', Arial, sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--uw-blue);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .section-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: var(--uw-blue);
+            color: white;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-weight: 700;
+            color: var(--gray-70);
+            font-size: 0.925rem;
+        }
+
+        label .required {
+            color: var(--uw-red);
+        }
+
+        input, select, textarea {
+            padding: 0.75rem;
+            border: 2px solid var(--gray-30);
+            border-radius: 4px;
+            font-size: 0.95rem;
+            font-family: 'Roboto', Arial, sans-serif;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--uw-blue);
+            box-shadow: 0 0 0 3px rgba(0, 81, 145, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .priority-selector {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .priority-option {
+            flex: 1;
+            min-width: 150px;
+            padding: 1.5rem;
+            border: 3px solid var(--gray-30);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            background: white;
+        }
+
+        .priority-option input[type="radio"] {
+            display: none;
+        }
+
+        .priority-option:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .priority-option.crisis {
+            border-color: var(--uw-red);
+        }
+
+        .priority-option.crisis input[type="radio"]:checked ~ .priority-label {
+            background: var(--uw-red);
+            color: white;
+        }
+
+        .priority-option.high {
+            border-color: var(--uw-orange);
+        }
+
+        .priority-option.high input[type="radio"]:checked ~ .priority-label {
+            background: var(--uw-orange);
+            color: white;
+        }
+
+        .priority-option.standard {
+            border-color: var(--status-standard);
+        }
+
+        .priority-option.standard input[type="radio"]:checked ~ .priority-label {
+            background: var(--status-standard);
+            color: white;
+        }
+
+        .priority-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .priority-label {
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .priority-desc {
+            font-size: 0.875rem;
+            color: var(--gray-50);
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 4px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            font-family: 'Roboto', Arial, sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: var(--uw-blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--uw-blue-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--gray-70);
+            border: 2px solid var(--gray-30);
+        }
+
+        .btn-secondary:hover {
+            background: var(--color-surface);
+            border-color: var(--gray-50);
+        }
+
+        /* Queue Dashboard */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 3px solid var(--gray-10);
+        }
+
+        .dashboard-title h1 {
+            font-size: 2rem;
+            margin-bottom: 0.25rem;
+            color: var(--uw-blue);
+        }
+
+        .dashboard-subtitle {
+            color: var(--gray-50);
+            font-size: 1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.75rem;
+            border-radius: 4px;
+            box-shadow: var(--shadow-sm);
+            border-left: 6px solid;
+            transition: all 0.2s;
+        }
+
+        .stat-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .stat-card.crisis {
+            border-left-color: var(--uw-red);
+        }
+
+        .stat-card.priority {
+            border-left-color: var(--uw-orange);
+        }
+
+        .stat-card.standard {
+            border-left-color: var(--status-standard);
+        }
+
+        .stat-card.total {
+            border-left-color: var(--uw-blue);
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--gray-50);
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--gray-70);
+            line-height: 1;
+        }
+
+        .stat-change {
+            font-size: 0.875rem;
+            margin-top: 0.75rem;
+            color: var(--gray-50);
+        }
+
+        /* Queue Table */
+        .queue-container {
+            background: white;
+            border-radius: 4px;
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+
+        .queue-header {
+            padding: 1.5rem;
+            border-bottom: 2px solid var(--gray-10);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--color-surface);
+        }
+
+        .queue-header h2 {
+            font-size: 1.25rem;
+            color: var(--uw-blue);
+            font-family: 'Roboto Condensed', Arial, sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .queue-filters {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--gray-30);
+            background: white;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 700;
+            font-family: 'Roboto', Arial, sans-serif;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--uw-blue);
+        }
+
+        .filter-btn.active {
+            background: var(--uw-blue);
+            color: white;
+            border-color: var(--uw-blue);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: var(--color-surface);
+        }
+
+        th {
+            text-align: left;
+            padding: 1rem 1.5rem;
+            font-weight: 700;
+            color: var(--gray-70);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-family: 'Roboto Condensed', Arial, sans-serif;
+        }
+
+        td {
+            padding: 1.25rem 1.5rem;
+            border-top: 1px solid var(--gray-10);
+        }
+
+        tr:hover {
+            background: var(--color-surface);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.4rem 0.85rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge.crisis {
+            background: rgba(255, 68, 59, 0.15);
+            color: var(--uw-red-dark);
+        }
+
+        .badge.priority {
+            background: rgba(255, 179, 81, 0.15);
+            color: var(--uw-orange-dark);
+        }
+
+        .badge.standard {
+            background: rgba(83, 158, 208, 0.15);
+            color: #07477A;
+        }
+
+        .badge.pending {
+            background: rgba(150, 150, 150, 0.15);
+            color: var(--gray-70);
+        }
+
+        .badge.assigned {
+            background: rgba(0, 81, 145, 0.15);
+            color: var(--uw-blue);
+        }
+
+        .case-id {
+            font-family: 'Roboto', monospace;
+            font-size: 0.875rem;
+            color: var(--uw-blue);
+            font-weight: 700;
+        }
+
+        .timestamp {
+            color: var(--gray-50);
+            font-size: 0.875rem;
+        }
+
+        /* Crisis Routing */
+        .routing-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .routing-main {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .crisis-alert {
+            background: white;
+            border: 4px solid var(--uw-red);
+            padding: 2rem;
+            border-radius: 4px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .alert-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--gray-10);
+        }
+
+        .alert-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--uw-red);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            animation: pulse 2s infinite;
+            flex-shrink: 0;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .alert-title {
+            flex: 1;
+        }
+
+        .alert-title h2 {
+            font-size: 1.5rem;
+            color: var(--uw-red);
+            margin-bottom: 0.5rem;
+            font-family: 'Roboto Condensed', Arial, sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .alert-title .case-id {
+            font-size: 1rem;
+        }
+
+        .alert-details {
+            background: var(--color-surface);
+            padding: 1.5rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-row {
+            display: flex;
+            padding: 0.875rem 0;
+            border-bottom: 1px solid var(--gray-10);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-weight: 700;
+            width: 160px;
+            color: var(--gray-70);
+        }
+
+        .detail-value {
+            flex: 1;
+            color: var(--gray-70);
+        }
+
+        .routing-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 1.25rem;
+            border: 3px solid;
+            border-radius: 4px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            background: white;
+            font-family: 'Roboto', Arial, sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .action-btn.emergency {
+            border-color: var(--uw-red);
+            color: var(--uw-red);
+        }
+
+        .action-btn.emergency:hover {
+            background: var(--uw-red);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .action-btn.assign {
+            border-color: var(--uw-blue);
+            color: var(--uw-blue);
+        }
+
+        .action-btn.assign:hover {
+            background: var(--uw-blue);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .routing-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .sidebar-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 4px;
+            box-shadow: var(--shadow-sm);
+            border-left: 6px solid var(--uw-blue);
+        }
+
+        .sidebar-card h3 {
+            font-size: 1.125rem;
+            margin-bottom: 1rem;
+            color: var(--uw-blue);
+            font-family: 'Roboto Condensed', Arial, sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .resource-list {
+            list-style: none;
+        }
+
+        .resource-item {
+            padding: 1rem;
+            background: var(--color-surface);
+            border-radius: 4px;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .resource-item:hover {
+            background: var(--uw-blue);
+            color: white;
+            border-left-color: var(--uw-orange);
+            transform: translateX(4px);
+        }
+
+        .resource-name {
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .resource-info {
+            font-size: 0.875rem;
+            opacity: 0.85;
+        }
+
+        .timeline {
+            list-style: none;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 2rem;
+            padding-bottom: 1.5rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 6px;
+            width: 12px;
+            height: 12px;
+            background: var(--uw-blue);
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px var(--uw-blue);
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 18px;
+            width: 2px;
+            height: calc(100% - 12px);
+            background: var(--gray-10);
+        }
+
+        .timeline-item:last-child::after {
+            display: none;
+        }
+
+        .timeline-time {
+            font-size: 0.75rem;
+            color: var(--gray-50);
+            margin-bottom: 0.25rem;
+            font-weight: 700;
+        }
+
+        .timeline-text {
+            font-size: 0.925rem;
+            color: var(--gray-70);
+        }
+
+        /* Live United Tagline */
+        .live-united {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            color: var(--uw-blue);
+            font-size: 0.875rem;
+            letter-spacing: 1px;
+        }
+
+        .live-united-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--uw-orange);
+            border-radius: 50%;
+        }
+
+        @media (max-width: 968px) {
+            .routing-container {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .priority-selector {
+                flex-direction: column;
+            }
+
+            .priority-option {
+                min-width: 100%;
+            }
+
+            table {
+                font-size: 0.875rem;
+            }
+
+            th, td {
+                padding: 0.75rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <!-- United Way Rainbow/Hand Symbol -->
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="#005191" stroke-width="3"/>
+                        <path d="M30 60 Q35 45, 50 45 T70 60" fill="none" stroke="#FFB351" stroke-width="4"/>
+                        <path d="M32 65 Q37 52, 50 52 T68 65" fill="none" stroke="#FF443B" stroke-width="4"/>
+                        <path d="M35 70 Q40 60, 50 60 T65 70" fill="none" stroke="#539ED0" stroke-width="4"/>
+                        <circle cx="50" cy="75" r="8" fill="#005191"/>
+                    </svg>
+                </div>
+                <div class="logo-text">
+                    <div class="logo-title">AUW 211 Navigator</div>
+                    <div class="logo-subtitle">Secure Intake Platform</div>
+                </div>
+            </div>
+            <div class="nav-tabs">
+                <button class="nav-tab active" onclick="switchScreen('intake')">New Intake</button>
+                <button class="nav-tab" onclick="switchScreen('queue')">Queue Dashboard</button>
+                <button class="nav-tab" onclick="switchScreen('crisis')">Crisis Routing</button>
+            </div>
+            <div class="user-info">
+                <div class="user-avatar">MT</div>
+                <span>M. Torres</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- SCREEN 1: Intake Form -->
+        <div id="intake" class="screen active">
+            <div class="intake-header">
+                <h1>211 Community Resource Intake</h1>
+                <p>Complete all required fields to process a new community assistance request</p>
+                <div class="live-united" style="margin-top: 1rem;">
+                    <span class="live-united-dot"></span>
+                    <span>LIVE UNITED</span>
+                </div>
+            </div>
+
+            <form>
+                <!-- Caller Information -->
+                <div class="form-section">
+                    <h2><span class="section-number">1</span> Caller Information</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>First Name <span class="required">*</span></label>
+                            <input type="text" placeholder="Enter first name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Last Name <span class="required">*</span></label>
+                            <input type="text" placeholder="Enter last name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number <span class="required">*</span></label>
+                            <input type="tel" placeholder="(808) 555-0000" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" placeholder="example@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Zip Code <span class="required">*</span></label>
+                            <input type="text" placeholder="96734" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Preferred Language</label>
+                            <select>
+                                <option>English</option>
+                                <option>Hawaiian</option>
+                                <option>Tagalog</option>
+                                <option>Ilocano</option>
+                                <option>Japanese</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Request Details -->
+                <div class="form-section">
+                    <h2><span class="section-number">2</span> Request Details</h2>
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label>Primary Need Category <span class="required">*</span></label>
+                            <select required>
+                                <option value="">Select a category...</option>
+                                <option>Food Assistance</option>
+                                <option>Housing/Shelter</option>
+                                <option>Healthcare</option>
+                                <option>Mental Health Services</option>
+                                <option>Utilities Assistance</option>
+                                <option>Employment Services</option>
+                                <option>Legal Aid</option>
+                                <option>Disaster Relief</option>
+                                <option>Child/Family Services</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Request Description <span class="required">*</span></label>
+                            <textarea placeholder="Please describe the caller's needs and situation in detail..." required></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Priority Assessment -->
+                <div class="form-section">
+                    <h2><span class="section-number">3</span> Priority Assessment</h2>
+                    <div class="priority-selector">
+                        <label class="priority-option crisis">
+                            <input type="radio" name="priority" value="crisis" required>
+                            <div class="priority-icon">🚨</div>
+                            <div class="priority-label">CRISIS</div>
+                            <div class="priority-desc">Immediate danger or emergency</div>
+                        </label>
+                        <label class="priority-option high">
+                            <input type="radio" name="priority" value="high" required>
+                            <div class="priority-icon">⚡</div>
+                            <div class="priority-label">HIGH</div>
+                            <div class="priority-desc">Urgent need within 24-48 hours</div>
+                        </label>
+                        <label class="priority-option standard">
+                            <input type="radio" name="priority" value="standard" required>
+                            <div class="priority-icon">📋</div>
+                            <div class="priority-label">STANDARD</div>
+                            <div class="priority-desc">Regular processing timeline</div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Additional Notes -->
+                <div class="form-section">
+                    <h2><span class="section-number">4</span> Navigator Notes</h2>
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label>Internal Notes</label>
+                            <textarea placeholder="Add any additional context, observations, or follow-up requirements..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button type="button" class="btn btn-secondary">Save as Draft</button>
+                    <button type="submit" class="btn btn-primary">Submit Intake</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- SCREEN 2: Queue Dashboard -->
+        <div id="queue" class="screen">
+            <div class="dashboard-header">
+                <div class="dashboard-title">
+                    <h1>Intake Queue Dashboard</h1>
+                    <div class="dashboard-subtitle">Real-time view of active cases and routing status</div>
+                </div>
+                <div class="live-united">
+                    <span class="live-united-dot"></span>
+                    <span>LIVE UNITED</span>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card crisis">
+                    <div class="stat-label">Crisis Cases</div>
+                    <div class="stat-value">3</div>
+                    <div class="stat-change">Requires immediate attention</div>
+                </div>
+                <div class="stat-card priority">
+                    <div class="stat-label">High Priority</div>
+                    <div class="stat-value">12</div>
+                    <div class="stat-change">Within 48-hour window</div>
+                </div>
+                <div class="stat-card standard">
+                    <div class="stat-label">Standard Queue</div>
+                    <div class="stat-value">47</div>
+                    <div class="stat-change">Normal processing</div>
+                </div>
+                <div class="stat-card total">
+                    <div class="stat-label">Total Active</div>
+                    <div class="stat-value">62</div>
+                    <div class="stat-change">↑ 8 from yesterday</div>
+                </div>
+            </div>
+
+            <div class="queue-container">
+                <div class="queue-header">
+                    <h2>Active Cases</h2>
+                    <div class="queue-filters">
+                        <button class="filter-btn active">All</button>
+                        <button class="filter-btn">Crisis</button>
+                        <button class="filter-btn">High</button>
+                        <button class="filter-btn">Standard</button>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Case ID</th>
+                            <th>Caller</th>
+                            <th>Need Category</th>
+                            <th>Priority</th>
+                            <th>Status</th>
+                            <th>Received</th>
+                            <th>Navigator</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="case-id">NAV-2026-0143</span></td>
+                            <td>Sarah M.</td>
+                            <td>Housing/Shelter</td>
+                            <td><span class="badge crisis">CRISIS</span></td>
+                            <td><span class="badge pending">Pending</span></td>
+                            <td><span class="timestamp">2 min ago</span></td>
+                            <td>Unassigned</td>
+                        </tr>
+                        <tr>
+                            <td><span class="case-id">NAV-2026-0142</span></td>
+                            <td>James K.</td>
+                            <td>Mental Health</td>
+                            <td><span class="badge crisis">CRISIS</span></td>
+                            <td><span class="badge assigned">Assigned</span></td>
+                            <td><span class="timestamp">15 min ago</span></td>
+                            <td>K. Williams</td>
+                        </tr>
+                        <tr>
+                            <td><span class="case-id">NAV-2026-0141</span></td>
+                            <td>Maria G.</td>
+                            <td>Food Assistance</td>
+                            <td><span class="badge priority">HIGH</span></td>
+                            <td><span class="badge assigned">Assigned</span></td>
+                            <td><span class="timestamp">28 min ago</span></td>
+                            <td>M. Torres</td>
+                        </tr>
+                        <tr>
+                            <td><span class="case-id">NAV-2026-0140</span></td>
+                            <td>Robert L.</td>
+                            <td>Utilities Assistance</td>
+                            <td><span class="badge priority">HIGH</span></td>
+                            <td><span class="badge pending">Pending</span></td>
+                            <td><span class="timestamp">1 hr ago</span></td>
+                            <td>Unassigned</td>
+                        </tr>
+                        <tr>
+                            <td><span class="case-id">NAV-2026-0139</span></td>
+                            <td>Lisa T.</td>
+                            <td>Employment Services</td>
+                            <td><span class="badge standard">STANDARD</span></td>
+                            <td><span class="badge assigned">Assigned</span></td>
+                            <td><span class="timestamp">1 hr ago</span></td>
+                            <td>J. Chen</td>
+                        </tr>
+                        <tr>
+                            <td><span class="case-id">NAV-2026-0138</span></td>
+                            <td>David P.</td>
+                            <td>Healthcare</td>
+                            <td><span class="badge priority">HIGH</span></td>
+                            <td><span class="badge assigned">Assigned</span></td>
+                            <td><span class="timestamp">2 hrs ago</span></td>
+                            <td>M. Torres</td>
+                        </tr>
+                        <tr>
+                            <td><span class="case-id">NAV-2026-0137</span></td>
+                            <td>Ana R.</td>
+                            <td>Legal Aid</td>
+                            <td><span class="badge standard">STANDARD</span></td>
+                            <td><span class="badge assigned">Assigned</span></td>
+                            <td><span class="timestamp">3 hrs ago</span></td>
+                            <td>P. Johnson</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- SCREEN 3: Crisis Routing -->
+        <div id="crisis" class="screen">
+            <div class="routing-container">
+                <div class="routing-main">
+                    <div class="crisis-alert">
+                        <div class="alert-header">
+                            <div class="alert-icon">⚠️</div>
+                            <div class="alert-title">
+                                <h2>Crisis Case - Immediate Action Required</h2>
+                                <span class="case-id">NAV-2026-0143</span>
+                            </div>
+                        </div>
+                        
+                        <div class="alert-details">
+                            <div class="detail-row">
+                                <div class="detail-label">Caller Name:</div>
+                                <div class="detail-value">Sarah M. (Female, Age 34)</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Contact:</div>
+                                <div class="detail-value">(808) 555-0892 | sarah.m@email.com</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Location:</div>
+                                <div class="detail-value">Kailua, HI 96734</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Primary Need:</div>
+                                <div class="detail-value">Emergency Housing/Shelter</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Situation:</div>
+                                <div class="detail-value">Caller is currently homeless with two minor children (ages 6 and 8). Recently evicted due to job loss. No family support in area. Staying in vehicle for past 3 nights. Children have not attended school this week. Caller reports feeling overwhelmed and anxious about children's safety and wellbeing.</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Risk Factors:</div>
+                                <div class="detail-value">Minor children, unstable housing, mental health concerns, isolated support system</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Received:</div>
+                                <div class="detail-value">Today at 2:43 PM (2 minutes ago)</div>
+                            </div>
+                        </div>
+
+                        <div class="routing-actions">
+                            <button class="action-btn emergency">🚨 Route to Emergency Services</button>
+                            <button class="action-btn assign">👤 Assign to Specialist Navigator</button>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h2>Routing Decision & Notes</h2>
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <label>Assigned Navigator</label>
+                                <select>
+                                    <option value="">Select navigator...</option>
+                                    <option>M. Torres - Family Services Specialist</option>
+                                    <option>K. Williams - Housing Crisis Specialist</option>
+                                    <option>J. Chen - Multi-Service Coordinator</option>
+                                    <option>P. Johnson - Legal & Family Advocate</option>
+                                </select>
+                            </div>
+                            <div class="form-group full-width">
+                                <label>Routing Notes</label>
+                                <textarea placeholder="Document routing decision, next steps, and any immediate actions taken..."></textarea>
+                            </div>
+                        </div>
+                        <div class="button-group">
+                            <button class="btn btn-secondary">Save Notes</button>
+                            <button class="btn btn-primary">Confirm Routing</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="routing-sidebar">
+                    <div class="sidebar-card">
+                        <h3>Emergency Resources</h3>
+                        <ul class="resource-list">
+                            <li class="resource-item">
+                                <div class="resource-name">Family Promise Hawaii</div>
+                                <div class="resource-info">Emergency shelter • Available beds: 4</div>
+                            </li>
+                            <li class="resource-item">
+                                <div class="resource-name">IHS - Next Step Shelter</div>
+                                <div class="resource-info">Crisis housing • 24/7 intake</div>
+                            </li>
+                            <li class="resource-item">
+                                <div class="resource-name">Hale Kipa Youth Services</div>
+                                <div class="resource-info">Family crisis support</div>
+                            </li>
+                            <li class="resource-item">
+                                <div class="resource-name">Hawaii Food Bank</div>
+                                <div class="resource-info">Emergency food assistance</div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="sidebar-card">
+                        <h3>Case Timeline</h3>
+                        <ul class="timeline">
+                            <li class="timeline-item">
+                                <div class="timeline-time">2:43 PM</div>
+                                <div class="timeline-text">Case created - Crisis priority assigned</div>
+                            </li>
+                            <li class="timeline-item">
+                                <div class="timeline-time">2:44 PM</div>
+                                <div class="timeline-text">Automated crisis alert sent to supervisors</div>
+                            </li>
+                            <li class="timeline-item">
+                                <div class="timeline-time">2:45 PM</div>
+                                <div class="timeline-text">Emergency resources matched</div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="sidebar-card">
+                        <h3>Quick Actions</h3>
+                        <ul class="resource-list">
+                            <li class="resource-item">
+                                <div class="resource-name">📞 Initiate Conference Call</div>
+                            </li>
+                            <li class="resource-item">
+                                <div class="resource-name">📧 Send Resource Email</div>
+                            </li>
+                            <li class="resource-item">
+                                <div class="resource-name">📋 Create Follow-up Task</div>
+                            </li>
+                            <li class="resource-item">
+                                <div class="resource-name">🔔 Set Reminder Alert</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+  document.querySelector('form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const payload = {
+      first_name: document.getElementById('first_name').value.trim(),
+      last_name: document.getElementById('last_name').value.trim(),
+      phone: document.getElementById('phone').value.trim(),
+      email: document.getElementById('email').value.trim() || null,
+      zip_code: document.getElementById('zip_code').value.trim(),
+      language: document.getElementById('language').value,
+      category: document.getElementById('category').value,
+      description: document.getElementById('description').value.trim(),
+      priority: document.querySelector('input[name="priority"]:checked')?.value,
+      notes: document.getElementById('notes').value.trim() || null
+    };
+
+    const res = await fetch('/api/intakes', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload)
+    });
+
+    if (!res.ok) {
+      const text = await res.text();
+      alert(`Submit failed (${res.status}): ${text}`);
+      return;
+    }
+
+    const data = await res.json();
+    alert(`Intake submitted!\nCase ID: ${data.case_id}\nPriority: ${data.priority}`);
+  });
+</script>
+</body>
+</html>

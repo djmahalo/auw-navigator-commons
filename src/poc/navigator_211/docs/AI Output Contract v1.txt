@@ -1,0 +1,17 @@
+domain_module must be one of:
+Housing | Food | Jobs | Financial Wellness | Mental Health | Mentorship & Learning | Other Resources
+
+urgency_level must be one of:
+Low | Medium | High
+
+escalation_needed must be:
+true | false
+
+escalation_severity must be an integer:
+1=Low, 2=Moderate, 3=High, 4=Immediate
+
+summary_for_human must be <= 500 characters, plain language, no medical diagnosis.
+
+client_location_text should be city/area only (no full addresses).
+
+The AI must never promise eligibility or outcomes. It can only suggest “next steps.”

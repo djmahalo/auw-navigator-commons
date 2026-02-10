@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AUW 211 Navigator — Client Intake</title>
+
+  <style>
+    :root{
+      --uw-blue:#005191;
+      --uw-blue-dark:#07477A;
+      --uw-orange:#FFB351;
+      --uw-red:#FF443B;
+      --gray-70:#545454;
+      --gray-50:#969696;
+      --gray-10:#E1E1E1;
+      --bg:#F7F7F7;
+      --card:#FFFFFF;
+      --shadow: 0 6px 18px rgba(0,0,0,0.10);
+      --radius: 10px;
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--gray-70);
+      line-height:1.45;
+    }
+    header{
+      background: var(--uw-blue);
+      color:#fff;
+      padding: 16px 18px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+    .header-inner{
+      max-width: 920px;
+      margin: 0 auto;
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 12px;
+      min-width: 0;
+    }
+    .logo{
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      background:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex: 0 0 auto;
+    }
+    .logo svg{ width: 30px; height: 30px; }
+    .title-wrap{ min-width:0; }
+    .title{
+      font-weight: 800;
+      font-size: 16px;
+      letter-spacing: -0.2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .subtitle{
+      font-size: 12px;
+      opacity: .92;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .pill{
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.18);
+      padding: 8px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    main{
+      max-width: 920px;
+      margin: 18px auto;
+      padding: 0 14px 28px;
+    }
+
+    .card{
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      border-left: 6px solid var(--uw-blue);
+    }
+    .card + .card{ margin-top: 14px; }
+
+    h1{
+      margin: 0 0 6px 0;
+      font-size: 20px;
+      color: var(--uw-blue);
+      letter-spacing: -0.2px;
+    }
+    .helptext{
+      margin: 0;
+      color: var(--gray-50);
+      font-size: 14px;
+    }
+
+    label{
+      display:block;
+      font-weight: 700;
+      margin: 14px 0 8px;
+      font-size: 14px;
+    }
+    textarea{
+      width: 100%;
+      border: 2px solid var(--gray-10);
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 14px;
+      min-height: 140px;
+      resize: vertical;
+      outline: none;
+      background: #fff;
+    }
+    textarea:focus{
+      border-color: var(--uw-blue);
+      box-shadow: 0 0 0 3px rgba(0,81,145,0.12);
+    }
+
+    .row{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    .btn{
+      border: none;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-weight: 800;
+      cursor:pointer;
+      font-size: 14px;
+      letter-spacing: .2px;
+      transition: transform .08s ease, box-shadow .12s ease, background .12s ease;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      user-select: none;
+    }
+    .btn:active{ transform: translateY(1px); }
+    .btn-primary{
+      background: var(--uw-blue);
+      color:#fff;
+    }
+    .btn-primary:hover{ background: var(--uw-blue-dark); box-shadow: 0 8px 18px rgba(0,0,0,0.10); }
+    .btn-secondary{
+      background: #fff;
+      color: var(--uw-blue);
+      border: 2px solid rgba(0,81,145,0.25);
+    }
+    .btn-secondary:hover{ border-color: rgba(0,81,145,0.45); box-shadow: 0 8px 18px rgba(0,0,0,0.08); }
+
+    .consent{
+      display:flex;
+      gap: 10px;
+      align-items:flex-start;
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 10px;
+      background: rgba(0,81,145,0.06);
+      border: 1px solid rgba(0,81,145,0.14);
+    }
+    .consent input{ margin-top: 2px; }
+    .consent small{
+      display:block;
+      color: var(--gray-70);
+      font-size: 13px;
+      margin-top: 2px;
+    }
+    .warn{
+      margin-top: 10px;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,68,59,0.25);
+      background: rgba(255,68,59,0.08);
+      color: #7a1e1a;
+      font-size: 13px;
+    }
+
+    .results{
+      margin-top: 14px;
+      display:none;
+      gap: 10px;
+    }
+    .results.active{ display: grid; }
+    .panel{
+      border-radius: 10px;
+      border: 1px solid var(--gray-10);
+      background: #fff;
+      padding: 12px;
+    }
+    .panel h2{
+      margin: 0 0 8px 0;
+      font-size: 14px;
+      color: var(--uw-blue);
+    }
+    pre{
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12.5px;
+      color: #2e2e2e;
+    }
+    ul{
+      margin: 0;
+      padding-left: 18px;
+      color: #2e2e2e;
+      font-size: 13px;
+    }
+
+    .statusbar{
+      margin-top: 12px;
+      font-size: 13px;
+      color: var(--gray-50);
+      display:flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.05);
+      color: #333;
+      font-weight: 700;
+      font-size: 12px;
+    }
+    .dot{
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--uw-orange);
+    }
+
+    @media (max-width: 560px){
+      .pill{ display:none; }
+      .row{ justify-content: stretch; }
+      .btn{ width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <!-- simple United Way-ish icon -->
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="46" fill="none" stroke="#005191" stroke-width="6"/>
+            <path d="M26 58 Q35 40, 50 40 T74 58" fill="none" stroke="#FFB351" stroke-width="6" stroke-linecap="round"/>
+            <path d="M30 66 Q38 50, 50 50 T70 66" fill="none" stroke="#FF443B" stroke-width="6" stroke-linecap="round"/>
+            <circle cx="50" cy="74" r="8" fill="#005191"/>
+          </svg>
+        </div>
+        <div class="title-wrap">
+          <div class="title">AUW 211 Navigator</div>
+          <div class="subtitle">Client Intake (Secure)</div>
+        </div>
+      </div>
+      <div class="pill">Not emergency services • Call 911 if in danger</div>
+    </div>
+  </header>
+
+  <main>
+    <div class="card">
+      <h1>Tell us what you need help with</h1>
+      <p class="helptext">
+        Write in your own words. If you want, the AI helper can rewrite your message so it’s clearer for our team.
+      </p>
+
+      <div class="warn">
+        <strong>Privacy:</strong> Please do not include passwords, Social Security numbers, or credit card numbers.
+        If you are in immediate danger, call <strong>911</strong>.
+      </div>
+
+      <label for="description">Your situation / request</label>
+      <textarea id="description" name="description" placeholder="Example: I received an eviction notice and need emergency housing options. I have two kids, and we have nowhere to stay after Friday..."></textarea>
+
+      <div class="consent">
+        <input id="consent" type="checkbox" />
+        <div>
+          <strong>I consent to using my text to generate suggestions.</strong>
+          <small>
+            The AI helper will only rewrite what you typed and suggest follow-up questions. It does not make decisions for you.
+          </small>
+        </div>
+      </div>
+
+      <div class="row">
+        <button id="btnAssist" class="btn btn-secondary" type="button">✨ AI Help me explain</button>
+        <button id="btnSubmit" class="btn btn-primary" type="button">Submit Intake</button>
+      </div>
+
+      <div class="statusbar">
+        <span class="tag"><span class="dot"></span> LIVE UNITED</span>
+        <span id="statusText">Ready.</span>
+      </div>
+
+      <div id="results" class="results">
+        <div class="panel">
+          <h2>Suggested rewrite</h2>
+          <pre id="suggestedText">(none yet)</pre>
+        </div>
+        <div class="panel">
+          <h2>Helpful follow-up questions</h2>
+          <ul id="questionsList"></ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="border-left-color: var(--uw-orange);">
+      <h1>What happens next?</h1>
+      <p class="helptext">
+        After you submit, a 211 Navigator reviews your request, may contact you for details, and connects you with resources.
+      </p>
+      <div class="warn" style="border-color: rgba(0,81,145,0.22); background: rgba(0,81,145,0.05); color: var(--gray-70);">
+        Tip: If you used “AI Help”, you can paste the suggested rewrite back into the text box before submitting.
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+
+    const statusText = $("statusText");
+    const description = $("description");
+    const consent = $("consent");
+    const results = $("results");
+    const suggestedText = $("suggestedText");
+    const questionsList = $("questionsList");
+
+    function setStatus(msg) {
+      statusText.textContent = msg;
+    }
+
+    function showResults() {
+      results.classList.add("active");
+    }
+
+    function clearQuestions() {
+      questionsList.innerHTML = "";
+    }
+
+    function addQuestion(q) {
+      const li = document.createElement("li");
+      li.textContent = q;
+      questionsList.appendChild(li);
+    }
+
+    async function postJSON(url, body) {
+      const res = await fetch(url, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(body)
+      });
+
+      const text = await res.text();
+      let data;
+      try { data = JSON.parse(text); } catch { data = { raw: text }; }
+
+      if (!res.ok) {
+        const msg = data?.error || data?.detail || text || `Request failed (${res.status})`;
+        throw new Error(msg);
+      }
+      return data;
+    }
+
+    $("btnAssist").addEventListener("click", async () => {
+      clearQuestions();
+      suggestedText.textContent = "(working...)";
+      showResults();
+
+      const payload = {
+        description: description.value,
+        consent: consent.checked
+      };
+
+      try {
+        setStatus("Asking AI helper...");
+        const data = await postJSON("/client/assist", payload);
+
+        suggestedText.textContent = data.suggested_description || "(no suggestion returned)";
+        clearQuestions();
+        (data.follow_up_questions || []).forEach(addQuestion);
+
+        setStatus("AI suggestions ready.");
+      } catch (err) {
+        suggestedText.textContent = "(none)";
+        clearQuestions();
+        setStatus("Error: " + err.message);
+        alert("AI Help failed: " + err.message);
+      }
+    });
+
+    $("btnSubmit").addEventListener("click", async () => {
+      const payload = {
+        description: description.value,
+        consent: consent.checked
+      };
+
+      try {
+        setStatus("Submitting intake...");
+        const data = await postJSON("/client/intake", payload);
+        setStatus("Submitted. Thank you.");
+        alert(`Thank you. Your intake was received.\nCase ID: ${data.case_id || "(pending)"}\nStatus: ${data.status || "received"}`);
+      } catch (err) {
+        setStatus("Error: " + err.message);
+        alert("Submit failed: " + err.message);
+      }
+    });
+  </script>
+</body>
+</html>

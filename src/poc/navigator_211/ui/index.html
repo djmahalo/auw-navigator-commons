@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AUW Navigator Demo</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>AUW 211 Navigator Intake Routing Demo</h1>
+
+<div class="container">
+
+  <div class="card">
+    <h2>Create Intake</h2>
+
+    <input id="caller" placeholder="Caller ID"><br>
+    <input id="domain" placeholder="Domain (Housing/Food)"><br>
+    <input id="priority" placeholder="Priority (Low/High)"><br>
+
+    <label>
+      Crisis?
+      <input type="checkbox" id="crisis">
+    </label><br>
+
+    <textarea id="narrative" placeholder="Narrative"></textarea><br>
+
+    <button onclick="createIntake()">Submit Intake</button>
+
+    <pre id="result"></pre>
+  </div>
+
+  <div class="card">
+    <h2>Queues</h2>
+    <button onclick="loadQueues()">Refresh</button>
+    <pre id="queues"></pre>
+  </div>
+
+  <div class="card">
+    <h2>Recent Intakes</h2>
+    <button onclick="loadIntakes()">Refresh</button>
+    <pre id="intakes"></pre>
+  </div>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
